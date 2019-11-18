@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import { notStrictEqual } from 'assert'
 
 const Persons = ({ persons, search }) => {
@@ -47,12 +48,19 @@ const Filter = ({ handleSearch, search }) => {
 
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' }
-  ])
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        setPersons(response.data)
+        
+      })
+  }, [])
 
 
   const handlePersonChange = (event) => {
@@ -74,15 +82,19 @@ const App = () => {
     if (persons.map(a => a.name).includes(newName)) {
       window.alert(`${newName} is already added to phonebook`)
     } else {
+      
       const personObject = {
         name: newName,
         number: newNumber
       }
-      setPersons(persons.concat(personObject))
+      axios
+        .post('http://localhost:3001/persons', personObject)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+          setNewName('')
+          setNewNumber('')
+        })
     }
-    setNewName('')
-    setNewNumber('')
-
   }
 
   return (
