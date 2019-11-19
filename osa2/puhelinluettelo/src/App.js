@@ -1,24 +1,60 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import { notStrictEqual } from 'assert'
+import personService from './services/persons'
 
-const Persons = ({ persons, search }) => {
+
+const Persons = ({ persons, search, setPersons, showMessage }) => {
   const notesToShow = persons.filter(person => person.name.toLowerCase().includes(search))
+
+
+  
+
+  const handleDelete = person => {
+    if (window.confirm(`Do you really wanna delete ${person.name}`))
+      personService.remove(person.id).then((response) => {
+        console.log(response.data)
+        setPersons(persons.filter(p => p.id !== response.data.id))
+      }
+      ).catch(error => {
+        showMessage('Error in deleting number', 'error')
+        setPersons(persons.filter(p => p.id !== response.data.id))
+
+      })
+
+
+  }
 
   const rows = () => notesToShow.map(person =>
     <li key={person.name}>
-      {person.name} - {person.number}
-    </li>)
+      <form onSubmit={() => handleDelete(person)}>
+
+        {person.name} - {person.number}
+        <button type="submit"> delete </button>
+      </form>
+    </li>
+  )
 
   return (
     <ul>{rows()}</ul>
   )
 }
 
-const PersonForm = ({ addPerson, newName, newNumber, handlePersonChange, handleNumberChange }) => {
+const Notification = ({ message, messageType }) => {
+
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className={messageType}>
+      {message}
+    </div>
+  )
+}
+
+const PersonForm = ({ formHandler, newName, newNumber, handlePersonChange, handleNumberChange }) => {
 
 
-  return (<form onSubmit={addPerson}>
+  return (<form onSubmit={formHandler}>
     <div>
       name:
       <input
@@ -52,13 +88,15 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [messageType, setMessageType] = useState('success')
+
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-        
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
 
@@ -75,25 +113,52 @@ const App = () => {
     setSearch(event.target.value)
   }
 
+  const addPerson = () => {
+    const personObject = {
+      name: newName,
+      number: newNumber
+    }
+    personService
+      .create(personObject)
+      .then(newPerson => {
+        setPersons(persons.concat(newPerson))
+        showMessage(`${newName} added`, 'success')
+        setNewName('')
+        setNewNumber('')
+      })
+  }
 
-  const addPerson = (event) => {
-    event.preventDefault()
+  const showMessage = (message, type) => {
+    setMessageType(type)
+    setErrorMessage(message)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+  }
 
-    if (persons.map(a => a.name).includes(newName)) {
-      window.alert(`${newName} is already added to phonebook`)
-    } else {
-      
-      const personObject = {
-        name: newName,
-        number: newNumber
-      }
-      axios
-        .post('http://localhost:3001/persons', personObject)
-        .then(response => {
-          setPersons(persons.concat(response.data))
+  const modifyPerson = () => {
+    const confirm = window.confirm(`${newName} is already in phonebook. Replace number?`)
+    if (confirm) {
+      const person = persons.find(p => p.name === newName)
+      const modifiedPerson = { ...person, number: newNumber }
+      personService
+        .update(person.id, modifiedPerson)
+        .then(returnedPerson => {
+          setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson))
+          showMessage(`${newName} edited`, 'success')
           setNewName('')
           setNewNumber('')
         })
+    }
+  }
+
+
+  const formHandler = (event) => {
+    event.preventDefault()
+    if (persons.map(a => a.name).includes(newName)) {
+      modifyPerson()
+    } else {
+      addPerson()
     }
   }
 
@@ -101,11 +166,14 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
+      <Notification message={errorMessage} messageType={messageType} />
+
+
       <Filter handleSearch={handleSearch} search={search} />
-      
+
       <h3>Add new:</h3>
       <PersonForm
-        addPerson={addPerson}
+        formHandler={formHandler}
         newName={newName}
         newNumber={newNumber}
         handlePersonChange={handlePersonChange}
@@ -113,7 +181,7 @@ const App = () => {
 
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} search={search} />
+      <Persons persons={persons} search={search} setPersons={setPersons} showMessage={showMessage} />
     </div>
   )
 
