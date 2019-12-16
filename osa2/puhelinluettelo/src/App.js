@@ -9,27 +9,21 @@ const Persons = ({ persons, search, setPersons, showMessage }) => {
   
 
   const handleDelete = person => {
-    if (window.confirm(`Do you really wanna delete ${person.name}`))
+    if (window.confirm(`Do you really wanna delete ${person.name}`)){
       personService.remove(person.id).then((response) => {
-        console.log(response.data)
-        setPersons(persons.filter(p => p.id !== response.data.id))
+        console.log("response data", response)
+        setPersons(persons.filter(p => p.id !== person.id))
       }
       ).catch(error => {
         showMessage('Error in deleting number', 'error')
-        setPersons(persons.filter(p => p.id !== response.data.id))
-
       })
-
-
+    }
   }
 
   const rows = () => notesToShow.map(person =>
     <li key={person.name}>
-      <form onSubmit={() => handleDelete(person)}>
-
         {person.name} - {person.number}
-        <button type="submit"> delete </button>
-      </form>
+        <button onClick={() => handleDelete(person)}> delete </button>
     </li>
   )
 
@@ -118,6 +112,7 @@ const App = () => {
       name: newName,
       number: newNumber
     }
+
     personService
       .create(personObject)
       .then(newPerson => {
