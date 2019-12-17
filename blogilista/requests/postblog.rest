@@ -2,7 +2,7 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    "title": "why i don't trust the sun",
+    "title": "you're not my real mom",
     "author": "donald darko",
     "url": "localhost",
     "likes": 69
