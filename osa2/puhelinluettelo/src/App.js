@@ -120,6 +120,9 @@ const App = () => {
         showMessage(`${newName} added`, 'success')
         setNewName('')
         setNewNumber('')
+      }).catch(error => {
+        showMessage(error.response.data.error, 'error')
+        console.log(error.response.data)
       })
   }
 
