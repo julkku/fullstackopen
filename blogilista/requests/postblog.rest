@@ -2,7 +2,7 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    "title": "i don't like coke",
+    "title": "are we there yet?",
     "author": "donald darko",
     "url": "localhost",
     "likes": 4
