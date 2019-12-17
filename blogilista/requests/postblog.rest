@@ -2,8 +2,8 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    "title": "you're not my real mom",
+    "title": "i don't like coke",
     "author": "donald darko",
     "url": "localhost",
-    "likes": 69
+    "likes": 4
 }
