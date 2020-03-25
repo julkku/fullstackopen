@@ -2,8 +2,8 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    "title": "are we there yet?",
+    "title": "i'm a jelly doughnut?",
     "author": "donald darko",
     "url": "localhost",
-    "likes": 4
+    "likes": 88
 }
