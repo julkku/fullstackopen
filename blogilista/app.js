@@ -26,6 +26,7 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(middleware.requestLogger)
 
+app.use(middleware.tokenExtractor)
 
 const usersRouter = require('./controllers/users')
 const postsRouter = require('./controllers/posts')
