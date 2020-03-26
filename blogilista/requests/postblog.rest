@@ -1,9 +1,9 @@
-POST http://localhost:3001/api/blogs
+POST http://localhost:3001/api/posts
 Content-Type: application/json
 
 {
-    "title": "i'm a jelly doughnut?",
-    "author": "donald darko",
+    "title": "u r a q t?",
+    "author": "pi",
     "url": "localhost",
     "likes": 88
 }

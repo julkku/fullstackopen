@@ -1,18 +1,24 @@
 const postsRouter = require("express").Router()
-const Blog = require("../models/post")
+const Post = require("../models/post")
 
 postsRouter.get("", async (request, response) => {
-  const blogs = await Blog.find({})
+  const blogs = await Post.find({})
   response.json(blogs)
 
 });
 
 postsRouter.post("", async (request, response) => {
-  const blog = new Blog(request.body)
+  const blog = new Post(request.body)
 
   const result = await blog.save()
-  response.status(201).json(result.toJSON())
+
+  if (blog.title === undefined || blog.url === undefined) {
+    response.status(400).end()
+    return
+  }
   
+  response.json(result.toJSON())
+
 })
 
 module.exports = postsRouter

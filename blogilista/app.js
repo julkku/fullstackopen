@@ -7,13 +7,13 @@ const mongoose = require('mongoose')
 
 
 const mongoUrl = config.MONGODB_URI
-mongoose.connect(mongoUrl, { useNewUrlParser: true })
+mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
 
 app.use(cors())
 app.use(bodyParser.json())
 
 const postsRouter = require('./controllers/posts')
 
-app.use('/api/blogs', postsRouter)
+app.use('/api/posts', postsRouter)
 
 module.exports = app
