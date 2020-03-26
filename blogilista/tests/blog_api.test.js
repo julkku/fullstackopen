@@ -1,15 +1,20 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
+const api = supertest(app)
+
 const Post = require('../models/post')
 const helper = require('./test_helper')
 
-const api = supertest(app)
+
 
 
 beforeEach(async () => {
+  await user.save()
   await Post.deleteMany({})
   await Post.insertMany(helper.initialPosts)
+
+
 })
 
 describe('pre-existing notes', () => {

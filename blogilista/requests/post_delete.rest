@@ -1,0 +1,2 @@
+DELETE http://localhost:3001/api/posts/5e7c9ae073e4374a00602d89
+

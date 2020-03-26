@@ -1,9 +1,0 @@
-POST http://localhost:3001/api/posts
-Content-Type: application/json
-
-{
-    "title": "u r a q t?",
-    "author": "pi",
-    "url": "localhost",
-    "likes": 88
-}

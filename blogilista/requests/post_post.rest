@@ -1,0 +1,11 @@
+POST http://localhost:3001/api/posts
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp1bGVzIiwiaWQiOiI1ZTdjOWE2NjczZTQzNzRhMDA2MDJkODgiLCJpYXQiOjE1ODUyMjYyMjF9.IlkDLuXJ94draV432Rfyd4q0CTszJaeURH0DLaw5CKY
+
+{
+    "title": "This is AUTHENTIQUE?",
+    "author": "me",
+    "url": "localhost",
+    "likes": 88,
+    "userId": "5e7c9a6673e4374a00602d88"
+}
