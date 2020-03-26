@@ -47,3 +47,33 @@ describe('favourite blog', () => {
     expect(result).toEqual(blogs[2])
   })
 })
+
+describe('most blogs', () => {
+  test('when list has one blog is correct', () => {
+    const result = listHelper.mostBlogs(listWithOneBlog)
+    const answer = { blogs: 1, author: 'Edsger W. Dijkstra' }
+    expect(result).toEqual(answer)
+
+  })
+
+  test('when list has many blogs is corrent', () => {
+    const result = listHelper.mostBlogs(blogs)
+    const answer = { blogs: 3, author: 'Robert C. Martin' }
+    expect(result).toEqual(answer)
+  })
+})
+
+describe('most likes', () => {
+  test('when list has one blog is correct', () => {
+    const result = listHelper.mostLikes(listWithOneBlog)
+    const answer = { likes: 5, author: 'Edsger W. Dijkstra' }
+    expect(result).toEqual(answer)
+
+  })
+
+  test('when list has many blogs is corrent', () => {
+    const result = listHelper.mostLikes(blogs)
+    const answer = { likes: 17, author: 'Edsger W. Dijkstra' }
+    expect(result).toEqual(answer)
+  })
+})
