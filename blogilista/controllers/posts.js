@@ -21,4 +21,17 @@ postsRouter.post("", async (request, response) => {
 
 })
 
+postsRouter.delete('/:id', async (request, response) => {
+  const post = await Post.findOneAndDelete(request.params.id)
+  response.status(204).end()
+
+})
+
+postsRouter.put('/:id', async (request, response) => {
+  const post = request.body
+  const result = await Post.findOneAndUpdate(request.params.id, post)
+  response.json(post.toJSON())
+
+})
+
 module.exports = postsRouter

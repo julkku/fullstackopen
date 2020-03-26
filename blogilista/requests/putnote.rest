@@ -1,0 +1,9 @@
+PUT http://localhost:3001/api/posts/5e7c8623f401441ba0f11480
+Content-Type: application/json
+
+{
+    "title": "u r a q t?",
+    "author": "pi hole",
+    "url": "localhost",
+    "likes": 5
+}
