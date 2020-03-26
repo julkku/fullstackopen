@@ -59,7 +59,58 @@ describe('when there is initially one user at db', () => {
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd.length).toBe(usersAtStart.length)
   })
+
+
 })
+
+describe('creation of new user', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+  })
+
+  test('creation of new user fails if username is too short', async () => {
+    const newUser = {
+      username: 'b',
+      name: 'Superuser',
+      password: 'salainen',
+    }
+
+    const result = await api
+    .post('/api/users')
+    .send(newUser)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('shorter than')
+
+    const usersAtEnd = await helper.usersInDb()
+    console.log(usersAtEnd)
+    expect(usersAtEnd.length).toBe(0)
+
+  })
+
+  test('creation of new user fails if password is too short', async () => {
+    const newUser = {
+      username: 'babby',
+      name: 'Superuser',
+      password: 's',
+    }
+
+    const result = await api
+    .post('/api/users')
+    .send(newUser)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('password')
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd.length).toBe(0)
+
+  })
+
+})
+
 
 afterAll(async () => {
   await new Promise(resolve => setTimeout(() => resolve(), 500))
