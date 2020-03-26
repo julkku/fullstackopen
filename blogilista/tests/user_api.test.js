@@ -9,7 +9,6 @@ const mongoose = require('mongoose')
 
 describe('when there is initially one user at db', () => {
   beforeEach(async () => {
-    jest.setTimeout(10000) 
 
     await User.deleteMany({})
 

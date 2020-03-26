@@ -13,7 +13,6 @@ const bcrypt = require('bcrypt')
 
 
 beforeEach(async () => {
-  jest.setTimeout(10000)
   await User.deleteMany({})
   await Post.deleteMany({})
 
