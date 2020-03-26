@@ -86,6 +86,20 @@ describe('addition of a new blog post', () => {
 
   })
 
+    test('fails without token', async () => {
+      const newPost = {
+        title: 'This is the real thing',
+        author: 'You',
+        url: "localhost",
+      }
+
+      await api
+      .post('/api/posts')
+      .send(newPost)
+      .expect(401)
+      
+    })
+
   test('that has likes set as undefined returnes post with 0 likes', async () => {
     const newPost = {
       title: 'This is the real thing',
