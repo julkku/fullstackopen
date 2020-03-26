@@ -4,26 +4,32 @@ const app = require('../app')
 const api = supertest(app)
 
 const Post = require('../models/post')
+const User = require('../models/user')
+
 const helper = require('./test_helper')
+const bcrypt = require('bcrypt')
 
 
 
 
 beforeEach(async () => {
-  await user.save()
+  jest.setTimeout(10000)
+  await User.deleteMany({})
   await Post.deleteMany({})
+
   await Post.insertMany(helper.initialPosts)
 
 
 })
 
-describe('pre-existing notes', () => {
+describe('pre-existing blog posts', () => {
 
   test('are returned as json', async () => {
+
     await api
       .get('/api/posts')
       .expect(200)
-      .expect('Content-Type', /application\/json/)
+
   })
 
   test('post id is defined as "id"', async () => {
@@ -38,8 +44,24 @@ describe('pre-existing notes', () => {
   })
 })
 
-describe('addition of a new note', () => {
-  test('succeeds if note is valid', async () => {
+describe('addition of a new blog post', () => {
+  beforeEach(async () => {
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', passwordHash })
+    await user.save()
+
+  })
+
+  test('succeeds if blog is valid', async () => {
+
+    const credentials = { username: "root", password: "sekret" }
+    const login = await api
+      .post('/api/login')
+      .send(credentials)
+      .expect(200)
+
+    const token = login.body.token
+
     const newPost = {
       title: 'This is the real thing',
       author: 'You',
@@ -49,6 +71,7 @@ describe('addition of a new note', () => {
 
     await api
       .post('/api/posts')
+      .set('Authorization', `Bearer ${token}`)
       .send(newPost)
       .expect(200)
       .expect('Content-Type', /application\/json/)
@@ -63,15 +86,24 @@ describe('addition of a new note', () => {
 
   })
 
-  test('that has likes set as undefined returnes note with 0 likes', async () => {
+  test('that has likes set as undefined returnes post with 0 likes', async () => {
     const newPost = {
       title: 'This is the real thing',
       author: 'You',
       url: "localhost",
     }
 
+    const credentials = { username: "root", password: "sekret" }
+    const login = await api
+      .post('/api/login')
+      .send(credentials)
+      .expect(200)
+
+    const token = login.body.token
+
     await api
       .post('/api/posts')
+      .set('Authorization', `Bearer ${token}`)
       .send(newPost)
       .expect(200)
       .expect('Content-Type', /application\/json/)
@@ -85,20 +117,90 @@ describe('addition of a new note', () => {
       author: 'UNDAFINED',
     }
 
+    const credentials = { username: "root", password: "sekret" }
+    const login = await api
+      .post('/api/login')
+      .send(credentials)
+      .expect(200)
+
+    const token = login.body.token
+
     await api
       .post('/api/posts')
+      .set('Authorization', `Bearer ${token}`)
       .send(newPost)
       .expect(400)
   })
 })
 
 describe('removing a post', () => {
-  test('succeeds', async () => {
-    const postsAtStart = await helper.postsInDb()
-    const post = postsAtStart[0]
+  beforeEach(async () => {
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', passwordHash })
+    const passwordHash2 = await bcrypt.hash('sekret', 10)
+    const user2 = new User({ username: 'hoot', passwordHash })
+    await user2.save()
+    await user.save()
+    await Post.deleteMany({})
+
+    const credentials = { username: "root", password: "sekret" }
+    const login = await api
+      .post('/api/login')
+      .send(credentials)
+
+    const token = login.body.token
+
+    const postToBeDeleted = {
+      title: 'This is the real thing',
+      author: 'You',
+      url: "localhost",
+      likes: 100
+    }
+
     await api
-      .delete(`/api/posts/${post.id}`)
+      .post('/api/posts')
+      .set('Authorization', `Bearer ${token}`)
+      .send(postToBeDeleted)
+
+
+  })
+  test('succeeds if user is same that created post', async () => {
+    const credentials = { username: "root", password: "sekret" }
+    const login = await api
+      .post('/api/login')
+      .send(credentials)
+      .expect(200)
+
+    const token = login.body.token
+
+    const posts = await helper.postsInDb()
+
+    await api
+      .delete(`/api/posts/${posts[0].id}`)
+      .set('Authorization', `Bearer ${token}`)
       .expect(204)
+
+    const postsAtEnd = await helper.postsInDb()
+    expect(postsAtEnd.length).toBe(0)
+
+  })
+
+  test('fails if different user tries to delete it', async () => {
+
+    const credentials = { username: "hoot", password: "sekret" }
+    const login = await api
+      .post('/api/login')
+      .send(credentials)
+      .expect(200)
+
+    const token = login.body.token
+
+    const posts = await helper.postsInDb()
+
+    await api
+      .delete(`/api/posts/${posts[0].id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(401)
 
     const postsAtEnd = await helper.postsInDb()
     expect(postsAtEnd.length).toBe(1)
@@ -109,5 +211,7 @@ describe('removing a post', () => {
 
 afterAll(async () => {
   await new Promise(resolve => setTimeout(() => resolve(), 500))
+  await User.deleteMany({})
+  await Post.deleteMany({})
   mongoose.connection.close()
 })

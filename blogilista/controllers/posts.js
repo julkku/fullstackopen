@@ -14,7 +14,6 @@ postsRouter.get("", async (request, response) => {
 
 postsRouter.post("", async (request, response) => {
   const body = request.body
-  console.log(request.token)
 
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
   if (!request.token || !decodedToken.id) {
@@ -41,14 +40,15 @@ postsRouter.post("", async (request, response) => {
 })
 
 postsRouter.delete('/:id', async (request, response) => {
-  const post = await Post.findOneAndDelete(request.params.id)
+  const post = await Post.findById(request.params.id)
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
   if (!request.token || !decodedToken.id) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
 
-
+  
   if ( post.user.toString() === decodedToken.id.toString() ) {
+    const post = await Post.findOneAndDelete(request.params.id)
     response.status(204).end()
   } else {
     return response.status(401).json({ error: 'invalid authorization' })
