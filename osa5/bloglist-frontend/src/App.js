@@ -14,7 +14,7 @@ const App = () => {
       <Notification message={message} />
 
       <LoginForm setUser={setUser} user={user} setMessage={setMessage} />
-      {user && <Blogs user={user} setMessage={setMessage}/>}
+      {user && <Blogs user={user} setMessage={setMessage} />}
     </div>
   )
 }
