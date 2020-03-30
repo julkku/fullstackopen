@@ -11,9 +11,15 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
     width: '500px',
   }
 
-  const infoStyle = {
-    display: hidden ? 'none' : ''
-  }
+  const blogInfo = (
+    <div>
+      {blog.url} <br />
+      {blog.likes} <button onClick={() => handleLike(blog)}>like</button> <br />
+      {blog.user.name}
+
+    </div>
+  )
+
 
   const togglehidden = () => {
     setHidden(!hidden)
@@ -24,14 +30,9 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
     <div style={blogStyle} onClick={togglehidden}>
       <b>{blog.title}</b> {blog.author} {' '}
       {user.username === blog.user.username &&
-                <button
-                  onClick={() => handleDelete(blog)}>delete</button>}
-      <div style={infoStyle}>
-        {blog.url} <br />
-        {blog.likes} <button onClick={() => handleLike(blog)}>like</button> <br />
-        {blog.user.name}
-
-      </div>
+        <button
+          onClick={() => handleDelete(blog)}>delete</button>}
+      {!hidden && blogInfo}
     </div>)
 }
 

@@ -3,12 +3,14 @@ import React, { useState, useEffect } from 'react'
 import blogService from '../services/blogs'
 import BlogForm from './BlogForm'
 import Togglable from './Togglable'
+import Notification from './Notification'
 
 const noteFormRef = React.createRef()
 
 
 const Blogs = ({ user }) => {
   const [blogs, setBlogs] = useState([])
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     async function fetchData() {
@@ -21,14 +23,9 @@ const Blogs = ({ user }) => {
     fetchData()
   }, [])
 
-  const addBlog = (blog) => {
-    noteFormRef.current.toggleVisibility()
-
-    setBlogs(blogs.concat(blog))
-  }
 
   const handleDelete = async (blog) => {
-    if (!window.confirm(`Do you really want to delete ${blog.name}`)) return
+    if (!window.confirm(`Do you really want to delete ${blog.title}`)) return
     try {
       const id = blog.id
 
@@ -61,14 +58,35 @@ const Blogs = ({ user }) => {
   }
 
 
+  const handleCreate = async (blog) => {
+
+
+
+
+    try {
+      const post = await blogService.create( blog )
+      setMessage(`Created blog: ${post.title}`)
+      setTimeout(() => { setMessage(null) }, 5000)
+      noteFormRef.current.toggleVisibility()
+
+      setBlogs(blogs.concat(post))
+
+    } catch (exception) {
+      console.log(exception)
+      setMessage('blog creation FAILED', exception)
+      setTimeout(() => { setMessage(null) }, 5000)
+    }
+  }
+
 
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={message} />
 
       <Togglable buttonLabel="new blog" ref={noteFormRef}>
 
-        <BlogForm addBlog={addBlog} />
+        <BlogForm handleCreate={handleCreate} />
       </Togglable>
       <br />
       <i>Click on a blogpost to show/hide</i>
