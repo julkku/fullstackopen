@@ -2,7 +2,7 @@ import React from 'react';
 
 const Notification = ({ message }) => {
     if (message === null) {
-      return null
+        return null
     }
 
     const style = {
@@ -10,17 +10,17 @@ const Notification = ({ message }) => {
         color: "gray",
         borderStyle: "solid",
         borderRadius: "5px",
-        borderColor:"blue",
+        borderColor: "blue",
         padding: "10px",
         marginBottom: "10px"
-        
+
     }
-  
+
     return (
-      <div style={style} className="error">
-        {message}
-      </div>
+        <div style={style} className="error">
+            {message}
+        </div>
     )
-  }
+}
 
 export default Notification

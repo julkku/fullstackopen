@@ -10,6 +10,7 @@ const BlogForm = ({ addBlog }) => {
     const [message, setMessage] = useState(null)
 
 
+
     const handleCreate = async (event) => {
         event.preventDefault()
 
@@ -39,8 +40,8 @@ const BlogForm = ({ addBlog }) => {
 
 
     return (
-        <div>
-            <Notification message={message}/>
+            <div>
+                <Notification message={message}/>
             <h2>create new blog</h2>
             <form onSubmit={handleCreate}>
                 <div>
@@ -72,7 +73,7 @@ const BlogForm = ({ addBlog }) => {
                 </div>
                 <button type="submit">create</button>
             </form >
-        </div>
+            </div>
     )
 }
 

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
-import Notification from './Notification'
 
-const LoginForm = ({ user, setUser }) => {
+const LoginForm = ({ user, setUser, setMessage }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [message, setMessage] = useState(null)
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
@@ -81,7 +79,6 @@ const LoginForm = ({ user, setUser }) => {
 
     return (
         <div>
-            <Notification message={message} />
 
             {!user && loginForm}
             {user && (
