@@ -14,7 +14,7 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
   const blogInfo = (
     <div>
       {blog.url} <br />
-      {blog.likes} <button onClick={() => handleLike(blog)}>like</button> <br />
+      {blog.likes} <button className='like-button' onClick={() => handleLike(blog)}>like</button> <br />
       {blog.user.name}
 
     </div>
@@ -27,10 +27,10 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
 
 
   return (
-    <div style={blogStyle} onClick={togglehidden}>
+    <div className='blog' style={blogStyle} onClick={togglehidden}>
       <b>{blog.title}</b> {blog.author} {' '}
       {user.username === blog.user.username &&
-        <button
+        <button className='delete-button'
           onClick={() => handleDelete(blog)}>delete</button>}
       {!hidden && blogInfo}
     </div>)

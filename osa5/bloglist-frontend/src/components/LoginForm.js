@@ -7,8 +7,10 @@ const LoginForm = ({ user, setUser, setMessage }) => {
   const [password, setPassword] = useState('')
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+
     if (loggedUserJSON) {
+
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       blogService.setToken(user.token)
@@ -24,7 +26,7 @@ const LoginForm = ({ user, setUser, setMessage }) => {
       })
 
       window.localStorage.setItem(
-        'loggedNoteappUser', JSON.stringify(user)
+        'loggedBlogappUser', JSON.stringify(user)
       )
 
       setUser(user)
@@ -41,7 +43,7 @@ const LoginForm = ({ user, setUser, setMessage }) => {
   }
 
   const handleLogout = () => {
-    window.localStorage.removeItem('loggedNoteappUser')
+    window.localStorage.removeItem('loggedBlogappUser')
     setUser(null)
     setMessage('Logged out successfully')
     setTimeout(() => { setMessage(null) }, 5000)
@@ -53,24 +55,26 @@ const LoginForm = ({ user, setUser, setMessage }) => {
       <h2>Log into application</h2>
       <form onSubmit={handleLogin}>
         <div>
-                    username
+          username
           <input
             type="text"
             value={username}
             name="Username"
+            id="username"
             onChange={({ target }) => setUsername(target.value)}
           ></input>
         </div>
         <div>
-                    password
+          password
           <input
             type="password"
             value={password}
             name="Password"
+            id="password"
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type="submit">login</button>
+        <button id="login-submit" type="submit">login</button>
       </form >
     </div>
   )
