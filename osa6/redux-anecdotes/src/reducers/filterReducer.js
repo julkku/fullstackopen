@@ -3,7 +3,7 @@ const reducer = (state = '', action) => {
         case 'SET_FILTER':
             return state = action.filter
         default:
-            return state = ''
+            return state
     }
 
 }

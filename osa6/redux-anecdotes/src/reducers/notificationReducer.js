@@ -5,22 +5,26 @@ const reducer = (state = null, action) => {
         case 'RESET_NOTIFICATION':
             return null
         default:
-            return null
+            return state
     }
-    return state
 }
 
-export const setNotification = (content) => {
-  return {
-      type: 'SET_NOTIFICATION',
-      content
-  }
+export const setNotification = (content, time) => {
+    return async dispatch => {
+        await dispatch({
+            type: 'SET_NOTIFICATION',
+            content
+        })
+        setTimeout(() => { dispatch(resetNotification()) }, time * 1000)
+    }
 }
+
+
 
 export const resetNotification = () => {
-  return {
-      type: 'RESET_NOTIFICATION'
-  }
+    return {
+        type: 'RESET_NOTIFICATION'
+    }
 }
 
 export default reducer
