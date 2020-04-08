@@ -76,7 +76,7 @@ describe('Blog app', function () {
 
   })
 
-  describe.only('With one user and many blogs', function () {
+  describe('With one user and many blogs', function () {
     beforeEach(function () {
       cy.login({ username: 'jules', password: 'salainen' })
       cy.createBlog({ title: 'one', author: 'marx', url: 'localhost' })
@@ -93,13 +93,17 @@ describe('Blog app', function () {
       cy.get('.like-button:last').click()
       cy.get('.blog').contains('two').click()
       cy.get('.blog').contains('localhost').contains('like').click()
-      cy.visit('http://localhost:3000')
+      cy.get('.blog:last').click()
+      cy.get('.like-button:last').click()
+      cy.get('.blog').contains('three').click()
+      cy.get('.blog').contains('localhost').contains('like').click()
+
       cy.get('.blog').then(blogs => {
         console.log(blogs[0])
         cy.wrap(blogs[0]).contains('ur mom')
         cy.wrap(blogs[1]).contains('hegel')
-        cy.wrap(blogs[2]).contains('marx')
-        cy.wrap(blogs[3]).contains('plato')
+        cy.wrap(blogs[2]).contains('plato')
+        cy.wrap(blogs[3]).contains('marx')
       })
 
     })
