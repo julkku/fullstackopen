@@ -7,7 +7,7 @@ import { checkLogin } from './reducers/sessionReducer'
 import {
   Switch, Route, Redirect, useRouteMatch
 } from 'react-router-dom'
-import { initializeBlogs } from './reducers/blogReducer'
+import { initializeBlogs, commentOnBlog } from './reducers/blogReducer'
 import Users from './components/Users'
 import { initializeUsers } from './reducers/userReducer'
 import User from './components/User'
@@ -25,6 +25,7 @@ const App = () => {
     dispatch(checkLogin())
     dispatch(initializeBlogs())
     dispatch(initializeUsers())
+
   }, [dispatch])
 
   const userMatch = useRouteMatch('/users/:id')

@@ -38,7 +38,6 @@ const Blogs = () => {
         <BlogForm handleCreate={handleCreate} />
       </Togglable>
       <br />
-      <i>Click on a blogpost to show/hide</i>
       {blogs.map(blog =>
         <div style={blogStyle} key={blog.id} ><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></div>
       )}

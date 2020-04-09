@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteBlog, likeBlog } from '../reducers/blogReducer'
+import CommentForm from './CommentForm'
 
 const Blog = ({ blog }) => {
   const dispatch = useDispatch()
@@ -30,6 +31,13 @@ const Blog = ({ blog }) => {
       {blog.url} <br />
       {blog.likes} <button className='like-button' onClick={() => handleLike(blog)}>like</button> <br />
       {blog.user.name}
+      <CommentForm blog = {blog} />
+      <b>Comments:</b>
+      <ul>
+        {blog.comments.map((comment, i) => (
+          <li key={i}>{comment}</li>
+        ))}
+      </ul>
 
     </div>
   )
