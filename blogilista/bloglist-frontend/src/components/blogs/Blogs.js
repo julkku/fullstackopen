@@ -1,9 +1,25 @@
 import React from 'react'
 import BlogForm from './BlogForm'
-import Togglable from './Togglable'
+import Togglable from '../Togglable'
 import { useDispatch, useSelector } from 'react-redux'
-import { addBlog } from '../reducers/blogReducer'
+import { addBlog } from '../../reducers/blogReducer'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+
+const BlogDiv = styled.div`
+  padding: 5px;
+  border: solid;
+  border-width: 1px;
+  width: 50%;
+  background-color: #CC7E85;
+  margin: 5px;
+  text-alignement: center;
+`
+
+const BlogLink = styled(Link)`
+  color: black;
+`
+
 
 const blogFormRef = React.createRef()
 
@@ -13,13 +29,6 @@ const Blogs = () => {
   const user = useSelector(state => state.user)
   if (!user) {
     return null
-  }
-
-  const blogStyle = {
-    padding: 5,
-    border: 'solid',
-    borderWidth: 1,
-    width: '500px',
   }
 
 
@@ -39,7 +48,7 @@ const Blogs = () => {
       </Togglable>
       <br />
       {blogs.map(blog =>
-        <div style={blogStyle} key={blog.id} ><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></div>
+        <BlogDiv key={blog.id} ><BlogLink to={`/blogs/${blog.id}`}>{blog.title}</BlogLink></BlogDiv>
       )}
 
 

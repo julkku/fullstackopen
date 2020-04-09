@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { commentOnBlog } from '../reducers/blogReducer'
+import { commentOnBlog } from '../../reducers/blogReducer'
+import { Button, Input } from '../styles'
+
+
 const CommentForm = ({ blog }) => {
   const [comment, setComment] = useState('')
   const dispatch = useDispatch()
@@ -18,16 +21,16 @@ const CommentForm = ({ blog }) => {
   return (
     <form style={formStyle} onSubmit={handleComment}>
       <div>
-        <input
+        <Input
           type="text"
           value={comment}
           name="comment"
           id="comment"
           onChange={({ target }) => setComment(target.value)}>
 
-        </input>
+        </Input>
       </div>
-      <button id="login-submit" type="submit">add comment</button>
+      <Button id="login-submit" type="submit">add comment</Button>
     </form >
   )
 }

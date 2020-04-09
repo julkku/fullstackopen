@@ -1,18 +1,26 @@
 import React, { useEffect } from 'react'
-import Blogs from './components/Blogs'
-import LoginForm from './components/LoginForm'
+import Blogs from './components/blogs/Blogs'
+import LoginForm from './components/users/LoginForm'
 import Notification from './components/Notification'
 import { useSelector, useDispatch } from 'react-redux'
 import { checkLogin } from './reducers/sessionReducer'
 import {
   Switch, Route, Redirect, useRouteMatch
 } from 'react-router-dom'
-import { initializeBlogs, commentOnBlog } from './reducers/blogReducer'
-import Users from './components/Users'
+import { initializeBlogs } from './reducers/blogReducer'
+import Users from './components/users/Users'
 import { initializeUsers } from './reducers/userReducer'
-import User from './components/User'
-import Blog from './components/Blog'
+import User from './components/users/User'
+import Blog from './components/blogs/Blog'
 import Menu from './components/Menu'
+import styled from 'styled-components'
+
+const Page = styled.div`
+  background: #A63A50;
+  height: 100%;
+  padding: 20px 50px;
+`
+
 
 const App = () => {
   const user = useSelector(state => state.user)
@@ -41,7 +49,7 @@ const App = () => {
 
 
   return (
-    <div>
+    <Page>
       <h2>Blog app</h2>
       <Menu />
       <Notification />
@@ -65,7 +73,7 @@ const App = () => {
           <Blogs />
         </Route>
       </Switch>
-    </div>
+    </Page>
   )
 }
 

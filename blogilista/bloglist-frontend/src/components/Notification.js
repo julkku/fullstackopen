@@ -1,5 +1,20 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import styled from 'styled-components'
+
+
+const NotificationDiv = styled.div`
+  font-size: 20px;
+  color: black;
+  background: #CC7E85;
+  border-style: solid;
+  border-radius: 5px;
+  border-color: black;
+  padding: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  width: 50%;
+`
 
 const Notification = () => {
   const message = useSelector(state => state.notification)
@@ -8,21 +23,11 @@ const Notification = () => {
     return null
   }
 
-  const style = {
-    fontSize: '20px',
-    color: 'gray',
-    borderStyle: 'solid',
-    borderRadius: '5px',
-    borderColor: 'blue',
-    padding: '10px',
-    marginBottom: '10px'
-
-  }
 
   return (
-    <div style={style} className="error">
+    <NotificationDiv>
       {message}
-    </div>
+    </NotificationDiv>
   )
 }
 

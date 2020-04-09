@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import { Button } from '../styles'
 
 const BlogForm = ({ handleCreate }) => {
   const [title, setTitle] = useState('')
@@ -57,7 +58,7 @@ const BlogForm = ({ handleCreate }) => {
             onChange={({ target }) => setUrl(target.value)}
           />
         </div>
-        <button id="post-create" type="submit">create</button>
+        <Button id="post-create" type="submit">create</Button>
       </form >
     </div>
   )

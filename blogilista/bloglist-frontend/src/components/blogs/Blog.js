@@ -1,7 +1,20 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteBlog, likeBlog } from '../reducers/blogReducer'
+import { deleteBlog, likeBlog } from '../../reducers/blogReducer'
 import CommentForm from './CommentForm'
+import { Button } from '../styles'
+import styled from 'styled-components'
+
+const BlogDiv = styled.div`
+  margin-top: 10px;
+  width: 500px;
+  padding: 10px;
+  border: solid;
+  border-width: 1px;
+  background-color: #CC7E85;
+  
+`
+
 
 const Blog = ({ blog }) => {
   const dispatch = useDispatch()
@@ -9,12 +22,7 @@ const Blog = ({ blog }) => {
 
   if (!blog) return ''
 
-  const blogStyle = {
-    padding: 5,
-    border: 'solid',
-    borderWidth: 1,
-    width: '500px',
-  }
+
 
 
   const handleDelete = async (blog) => {
@@ -28,8 +36,8 @@ const Blog = ({ blog }) => {
 
   const blogInfo = (
     <div>
-      {blog.url} <br />
-      {blog.likes} <button className='like-button' onClick={() => handleLike(blog)}>like</button> <br />
+      <a href={blog.url}><Button>visit</Button></a> <br />
+      {blog.likes} likes <Button className='like-button' onClick={() => handleLike(blog)}>like</Button> <br />
       {blog.user.name}
       <CommentForm blog = {blog} />
       <b>Comments:</b>
@@ -46,13 +54,13 @@ const Blog = ({ blog }) => {
 
 
   return (
-    <div className='blog' style={blogStyle}>
+    <BlogDiv className='blog'>
       <b>{blog.title}</b> {blog.author} {' '}
       {user.username === blog.user.username &&
-        <button className='delete-button'
-          onClick={() => handleDelete(blog)}>delete</button>}
+        <Button className='delete-button'
+          onClick={() => handleDelete(blog)}>delete</Button>}
       {blogInfo}
-    </div>)
+    </BlogDiv>)
 }
 
 export default Blog
