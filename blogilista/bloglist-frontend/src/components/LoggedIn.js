@@ -14,7 +14,7 @@ const User = () => {
   return (
     <div>
       {user && (
-        <p>Logged in as {user.name} <button onClick={() => handleLogout()}>logout</button></p>
+        <span> Logged in as {user.name} <button onClick={() => handleLogout()}>logout</button></span>
       )}
     </div>
   )

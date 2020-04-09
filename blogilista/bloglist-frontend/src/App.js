@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import Blogs from './components/Blogs'
-import LoggedIn from './components/LoggedIn'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import { useSelector, useDispatch } from 'react-redux'
@@ -13,6 +12,7 @@ import Users from './components/Users'
 import { initializeUsers } from './reducers/userReducer'
 import User from './components/User'
 import Blog from './components/Blog'
+import Menu from './components/Menu'
 
 const App = () => {
   const user = useSelector(state => state.user)
@@ -42,7 +42,7 @@ const App = () => {
   return (
     <div>
       <h2>Blog app</h2>
-      <LoggedIn />
+      <Menu />
       <Notification />
       <Switch>
         <Route path="/login">
