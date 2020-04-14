@@ -52,6 +52,8 @@ const typeDefs = gql`
     allAuthors: [Author!]!
     me: User
     allUsers: [User!]!
+    allGenres: [String!]!
+    booksByFavoriteGenre: [Book!]!
   }
 
   type Mutation {
@@ -89,8 +91,18 @@ const resolvers = {
     },
     allAuthors: () => Author.find({}),
     allUsers: () => User.find({}),
+    allGenres: async () => {
+      let genres = new Set()
+      const res = await Book.find({})
+      res.forEach(r => r.genres.forEach(genre => genres.add(genre)))
+      return genres
+    },
     me: (root, args, context) => {
       return context.currentUser
+    },
+    booksByFavoriteGenre: async (root, args, context) => {
+      return Book.find({ genres: { $in: [context.currentUser.favoriteGenre] } }) 
+
     }
   },
   Author: {

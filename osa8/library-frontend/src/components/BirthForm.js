@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { SET_BIRTH, ALL_AUTHORS } from '../queries'
-import Authors from './Authors'
 
 const BirthForm = (props) => {
     const [name, setName] = useState('')
@@ -30,7 +29,7 @@ const BirthForm = (props) => {
                     <select
                         value={name}
                         onChange={({ target }) => setName(target.value)}>
-                            <option value=''>Select author</option>
+                        <option value=''>Select author</option>
                         {props.authors.map(author => (
                             <option value={author.name} key={author.id}>{author.name}</option>
                         ))}
