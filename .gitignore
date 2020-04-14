@@ -1,2 +1,3 @@
 sandbox/
 *.vscode
+node_modules/
