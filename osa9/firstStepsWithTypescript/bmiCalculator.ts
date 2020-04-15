@@ -15,3 +15,5 @@ const calculateBmi = (cm: number, kg: number): string => {
 };
 
 console.log(calculateBmi(Number(process.argv[2]), Number(process.argv[3])));
+
+export default(calculateBmi);
