@@ -2,8 +2,9 @@ POST http://localhost:3001/api/patients
 Content-Type: application/json
 
 {
-"name": "Jules",
+"name": "Arnold",
 "dateOfBirth": "1995-07-09",
 "gender": "male",
-"occupation": "coder"
+"occupation": "superstar",
+"ssn": "50005-59593--3"
 }
