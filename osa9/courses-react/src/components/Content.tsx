@@ -1,20 +1,22 @@
 import React from 'react';
+import Part from './Part';
+import { CoursePart } from '../types'
 
-interface Part {
-    name: string;
-    exerciseCount: number;
-}   
+
 
 interface ContentProps {
-    parts: Array<Part>;
+    parts: Array<CoursePart>;
 }
 
 const Content: React.FC<ContentProps> = (props) => {
     return (
-        <p>
-        Number of exercises{" "}
-        {props.parts.reduce((carry, part) => carry + part.exerciseCount, 0)}
-      </p>
+        <div>{props.parts.map((part, i) => 
+            <span key={i}>
+                <Part part={part} />
+            </span>
+            
+        )}
+        </div>
     )
 }
 

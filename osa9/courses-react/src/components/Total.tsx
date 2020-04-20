@@ -11,10 +11,10 @@ interface TotalProps {
 
 const Total: React.FC<TotalProps> = (props) => {
     return (
-        <div>{props.parts.map((part, i) => 
-            <p key={i}> {part.name} {part.exerciseCount}</p>
-        )}
-        </div>
+        <p>
+            Total number of exercises{" "}
+            {props.parts.reduce((carry, part) => carry + part.exerciseCount, 0)}
+        </p>
     )
 }
 
