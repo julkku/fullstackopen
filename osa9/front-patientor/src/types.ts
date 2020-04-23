@@ -30,6 +30,8 @@ interface SickLeave {
   endDate: string;
 }
 
+export type HealthCheckTypes = "OccupationalHealthcare" | "HealthCheck" | "Hospital";
+
 export interface OccupationalHealthcareEntry extends BaseEntry {
   type: "OccupationalHealthcare";
   employerName: string;

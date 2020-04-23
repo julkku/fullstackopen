@@ -1,4 +1,4 @@
-import { NewPatient, Gender } from './types';
+import { NewPatient, Gender, NewEntry, HealthCheckRating } from './types';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 const isGender = (param: any): param is Gender => {
@@ -48,5 +48,65 @@ export const toNewPatient = (object: any): NewPatient => {
         entries: []
     } ;
     return newPatientData;
+};
+
+
+const parseType = (string: any): "HealthCheck" | "Hospital" | "OccupationalHealthcare" => {
+    if(!string || !isString(string) 
+    || !(string === 'HealthCheck' || string === 'OccupationalHealthcare' || string === 'Hospital')
+    ) {
+        throw new Error(`Incorrect or missing type: ${string}`);
+    }
+    return string;
+}; 
+
+const parseHealthCheckRating = (number: any): number => {
+    
+    if(!number && isNaN(Number(number))) {
+        throw new Error("missing health check rating");
+    }
+    if(!Object.values(HealthCheckRating).includes(Number(number))) {
+        throw new Error("invalid health check rating");
+    }
+
+    return Number(number);
+};
+
+export const toNewEntry = (object: any): NewEntry => {
+    const type = parseType(object.type);
+    const baseData = {
+        date: parseDate(object.date),
+        description: parseString(object.description, 'description'),
+        specialist: parseString(object.specialist, 'specialist'),
+        diagnosisCodes: object.diagnosisCodes
+    };
+    switch (type) {
+        case 'HealthCheck':
+            return {
+                ...baseData, 
+                type: type,
+                healthCheckRating : parseHealthCheckRating(object.healthCheckRating)
+            };
+            
+        case 'Hospital':
+            if(!object.discharge) {
+                throw new Error("missing discharge");
+            }
+            return {
+            ...baseData, 
+            type: type,
+            discharge: object.discharge
+        };
+        case 'OccupationalHealthcare':
+            if(!object.employerName) {
+                throw new Error("missing employer name");
+            }
+            return {
+                ...baseData,
+                type: type,
+                employerName: parseString(object.employerName, 'employer name'),
+                sickLeave: object.sickLeave
+            };
+    }
 };
 
